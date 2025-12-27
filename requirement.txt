@@ -7,4 +7,5 @@ seaborn
 scikit-learn
 catboost
 xgboost
+dataclasses
 -e .
