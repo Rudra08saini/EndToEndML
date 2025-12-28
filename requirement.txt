@@ -8,5 +8,4 @@ scikit-learn
 catboost
 xgboost
 dataclasses
-pickle
 -e .
