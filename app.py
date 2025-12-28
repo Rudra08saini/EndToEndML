@@ -7,8 +7,8 @@ from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 from sklearn.model_selection import train_test_split
 import os
 from src.pipeline.predict_pipeline import PredictPipeline
-app = Flask(__name__)
-
+application = Flask(__name__)
+app = application
 # Metrics container (computed at startup if model.pkl exists)
 METRICS = None
 
