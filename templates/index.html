@@ -1,0 +1,137 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Student Performance — ML Demo</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="hero">
+        <div class="left">
+          <span class="kicker">ML Demo</span>
+          <h1>Student Performance — Predict Math Score</h1>
+          <p class="lead">Estimate a student's expected math score using demographic and exam results. Built with a scikit-learn pipeline that includes preprocessing and a regression model.</p>
+
+          <div class="badges">
+            <div class="badge">Regression</div>
+            <div class="badge">scikit-learn</div>
+            <div class="badge">Demo UI</div>
+            <div class="badge">CSV dataset</div>
+          </div>
+
+          <div class="metrics">
+            <div class="metric">
+              <div class="label">Model</div>
+              <div class="val">RandomForest</div>
+            </div>
+            <div class="metric">
+              <div class="label">Target</div>
+              <div class="val">math_score</div>
+            </div>
+            <div class="metric">
+              <div class="label">Inputs</div>
+              <div class="val">7</div>
+            </div>
+          </div>
+
+          {% if metrics is none %}
+            <p class="helper" style="margin-top:12px">Model metrics not available (no <code>model.pkl</code> found).</p>
+          {% elif metrics.error is defined %}
+            <p class="helper" style="margin-top:12px">Error computing metrics: {{ metrics.error }}</p>
+          {% else %}
+            <div class="metrics" style="margin-top:12px">
+              <div class="metric">
+                <div class="label">MAE</div>
+                <div class="val">{{ metrics.mae }}</div>
+              </div>
+              <div class="metric">
+                <div class="label">RMSE</div>
+                <div class="val">{{ metrics.rmse }}</div>
+              </div>
+              <div class="metric">
+                <div class="label">R²</div>
+                <div class="val">{{ metrics.r2 }}</div>
+              </div>
+            </div>
+            <p class="helper" style="margin-top:8px">Evaluated on {{ metrics.n_test }} held-out samples</p>
+          {% endif %}
+
+          <div class="cta-row">
+            <a class="btn btn-lg" href="{{ url_for('predict') }}">Predict now</a>
+          </div>
+
+          <p class="sub">Tip: the model expects the exact categorical labels shown on the form (case-sensitive). If `model.pkl` is missing, the predict page will indicate that.</p>
+        </div>
+        <div class="right">
+          <img src="{{ url_for('static', filename='img/student-illustration.svg') }}" alt="Student illustration" style="max-width:320px;width:100%;opacity:0.95">
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="details">
+        <div class="detail-card">
+          <h3>About the project</h3>
+          <p class="helper">This repository demonstrates an end-to-end ML workflow: data ingestion, EDA, model training, and a minimal web UI to make predictions.</p>
+          <ul class="detail-list">
+            <li><strong>Dataset</strong>: <code>notebook/data/stud.csv</code></li>
+            <li><strong>Goal</strong>: Predict a student's <strong>math_score</strong></li>
+            <li><strong>Language</strong>: Python (scikit-learn, Flask)</li>
+          </ul>
+        </div>
+
+        <div class="detail-card">
+          <h3>Model details</h3>
+          <p class="helper">Baseline pipeline includes one-hot encoding for categorical features, scaling for numeric ones, and a RandomForest regressor. The saved artifact is <code>model.pkl</code>.</p>
+          <ul class="detail-list">
+            <li><strong>Type</strong>: scikit-learn Pipeline</li>
+            <li><strong>Model</strong>: RandomForest (baseline)</li>
+            <li><strong>Inputs</strong>: gender, race_ethnicity, parental_level_of_education, lunch, test_preparation_course, reading_score, writing_score</li>
+          </ul>
+        </div>
+      </div>
+
+      <hr />
+
+      <h3>Inputs</h3>
+      <div class="input-grid">
+        <div class="input-item"><strong>gender</strong>: male / female</div>
+        <div class="input-item"><strong>race_ethnicity</strong>: group A / B / C / D / E</div>
+        <div class="input-item"><strong>parental_level_of_education</strong>: some high school / high school / some college / associate's / bachelor's / master's</div>
+        <div class="input-item"><strong>lunch</strong>: standard / free/reduced</div>
+        <div class="input-item"><strong>test_preparation_course</strong>: none / completed</div>
+        <div class="input-item"><strong>reading_score</strong> &amp; <strong>writing_score</strong>: numeric (0–100)</div>
+      </div>
+
+      <div class="model-performance-card">
+        <h3>Model performance</h3>
+        {% if metrics is none %}
+          <p class="helper">Model metrics not available (no <code>model.pkl</code> found).</p>
+        {% elif metrics.error is defined %}
+          <p class="helper">Error computing metrics: {{ metrics.error }}</p>
+        {% else %}
+          <div class="metrics" style="margin-top:12px">
+            <div class="metric">
+              <div class="label">MAE</div>
+              <div class="val">{{ metrics.mae }}</div>
+            </div>
+            <div class="metric">
+              <div class="label">RMSE</div>
+              <div class="val">{{ metrics.rmse }}</div>
+            </div>
+            <div class="metric">
+              <div class="label">R²</div>
+              <div class="val">{{ metrics.r2 }}</div>
+            </div>
+          </div>
+          <p class="helper" style="margin-top:8px">Evaluated on {{ metrics.n_test }} held-out samples</p>
+        {% endif %}
+      </div>
+
+      <p class="helper" style="margin-top:14px;">Data source: <code>notebook/data/stud.csv</code> — model file: <code>model.pkl</code></p>
+    </div>
+  </div>
+</body>
+</html>
