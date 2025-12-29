@@ -11,6 +11,7 @@ application = Flask(__name__)
 app = application
 # Metrics container (computed at startup if model.pkl exists)
 METRICS = None
+port = int(os.environ.get("PORT", 8080))
 
 def compute_metrics():
     """Load model.pkl and dataset, evaluate on a test split and populate METRICS."""
@@ -81,4 +82,4 @@ def predict():
     return render_template('home.html', metrics=METRICS)   
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0" )
+    app.run(host="0.0.0.0", port=port)
