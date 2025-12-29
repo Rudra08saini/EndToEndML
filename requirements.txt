@@ -1,4 +1,5 @@
 setuptools
+gunicorn
 pandas
 numpy
 seaborn
